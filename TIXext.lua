@@ -1,0 +1,54 @@
+-- Public functions (Rainmeter 3.3 hooks)
+function Initialize()
+	updateAll(true)
+end
+
+function Update()
+	updateAll()
+end
+
+-- Choose N flags from M bits.
+-- Adapted from http://stackoverflow.com/a/3724708
+-- Lua 5.1 doesn't support bitwise...
+function chooseBits(N, M)
+	local a = {}
+	for i = M-N, M-1 do
+		local f = 0
+		if i then
+			f = math.random(0, i)
+		end
+		if a[f] then
+			f = i
+		end
+		a[f] = true
+	end
+	return a
+end
+
+-- Update a section of meters
+function updateSection(prefix, vCur, vMax, colOn, colOff)
+	local f = chooseBits(vCur, vMax)
+	for i=0, vMax-1 do
+		if f[i] then
+			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', colOn)
+		else
+			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', '#COL0#')
+		end
+	end
+end
+
+-- Update all sections
+function updateAll(forceHM)
+	local now = os.date("*t")
+	local h = now.hour
+	local m = now.min
+	local s = now.sec
+	if (s % 2) == 0 or forceHM then
+		updateSection('MeterH0', math.floor(h / 10), 3, '#COL1#', '#COL0#')
+		updateSection('MeterH1',       h % 10      , 9, '#COL2#', '#COL0#')
+		updateSection('MeterM0', math.floor(m / 10), 6, '#COL3#', '#COL0#')
+		updateSection('MeterM1',       m % 10      , 9, '#COL1#', '#COL0#')
+	end
+	updateSection('MeterS0', math.floor(s / 10), 6, '#COL2#', '#COL0#')
+	updateSection('MeterS1',       s % 10      , 9, '#COL3#', '#COL0#')
+end
