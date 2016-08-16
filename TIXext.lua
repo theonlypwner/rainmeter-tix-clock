@@ -34,11 +34,11 @@ end
 function updateSection(prefix, vCur, vMax, col)
 	local f, v = chooseBits(vCur, vMax)
 	for i=0, vMax-1 do
+		local c = '#COL0#'
 		if f[i] == v then
-			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', col)
-		else
-			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', '#COL0#')
+			c = col
 		end
+		SKIN:Bang('!SetOption', prefix..i, 'SolidColor', c)
 	end
 end
 
