@@ -12,6 +12,11 @@ end
 -- Lua 5.1 doesn't support bitwise...
 function chooseBits(N, M)
 	local a = {}
+    local v = true
+    if M < N*2 then
+        v = nil
+        N = M-N
+    end
 	for i = M-N, M-1 do
 		local f = 0
 		if i then
@@ -22,14 +27,14 @@ function chooseBits(N, M)
 		end
 		a[f] = true
 	end
-	return a
+	return a, v
 end
 
 -- Update a section of meters
 function updateSection(prefix, vCur, vMax, colOn, colOff)
-	local f = chooseBits(vCur, vMax)
+	local f, v = chooseBits(vCur, vMax)
 	for i=0, vMax-1 do
-		if f[i] then
+		if f[i] == v then
 			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', colOn)
 		else
 			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', '#COL0#')
