@@ -31,11 +31,11 @@ function chooseBits(N, M)
 end
 
 -- Update a section of meters
-function updateSection(prefix, vCur, vMax, colOn, colOff)
+function updateSection(prefix, vCur, vMax, col)
 	local f, v = chooseBits(vCur, vMax)
 	for i=0, vMax-1 do
 		if f[i] == v then
-			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', colOn)
+			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', col)
 		else
 			SKIN:Bang('!SetOption', prefix..i, 'SolidColor', '#COL0#')
 		end
@@ -49,11 +49,11 @@ function updateAll(forceHM)
 	local m = now.min
 	local s = now.sec
 	if (s % 2) == 0 or forceHM then
-		updateSection('MeterH0', math.floor(h / 10), 3, '#COL1#', '#COL0#')
-		updateSection('MeterH1',       h % 10      , 9, '#COL2#', '#COL0#')
-		updateSection('MeterM0', math.floor(m / 10), 6, '#COL3#', '#COL0#')
-		updateSection('MeterM1',       m % 10      , 9, '#COL1#', '#COL0#')
+		updateSection('MeterH0', math.floor(h / 10), 3, '#COL1#')
+		updateSection('MeterH1',       h % 10      , 9, '#COL2#')
+		updateSection('MeterM0', math.floor(m / 10), 6, '#COL3#')
+		updateSection('MeterM1',       m % 10      , 9, '#COL1#')
 	end
-	updateSection('MeterS0', math.floor(s / 10), 6, '#COL2#', '#COL0#')
-	updateSection('MeterS1',       s % 10      , 9, '#COL3#', '#COL0#')
+	updateSection('MeterS0', math.floor(s / 10), 6, '#COL2#')
+	updateSection('MeterS1',       s % 10      , 9, '#COL3#')
 end
