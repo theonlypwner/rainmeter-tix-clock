@@ -12,11 +12,11 @@ end
 -- Lua 5.1 doesn't support bitwise...
 function chooseBits(N, M)
 	local a = {}
-    local v = true
-    if M < N*2 then
-        v = nil
-        N = M-N
-    end
+	local v = true
+	if M < N*2 then
+		v = nil
+		N = M-N
+	end
 	for i = M-N, M-1 do
 		local f = 0
 		if i then
